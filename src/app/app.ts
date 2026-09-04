@@ -1,12 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { PublicLayoutComponent } from './public/_layout/layout.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [PublicLayoutComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.scss',
 })
-export class App {
-  protected readonly title = signal('purpleapp');
-}
+export class App {}

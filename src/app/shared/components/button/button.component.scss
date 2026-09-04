@@ -1,0 +1,24 @@
+.form__button {
+  width: 140px;
+  height: 52px;
+  margin-top: 22px;
+  border-radius: 16px;
+  background-color: #D89C00;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+}
+
+.form__button:hover {
+  opacity: 0.8;
+}
+
+.form__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
