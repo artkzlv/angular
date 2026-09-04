@@ -2,23 +2,15 @@
   <div class="layout__logo">
     <img
       ngSrc="images/logo.svg"
-      alt="Cryptik logo"
+      alt="Filmly logo"
       width="117"
       height="29"
       class="layout__logo--image"
     />
   </div>
 
-  <h1 class="login__heading">
-    Вход
-  </h1>
-
-  <div class="login__form">
-    <app-input class="login__form--control" iconUrl="icons/user.svg" placeholder="Email" (controlValue)="onInputChange($event)"/>
-
-    <app-password-input class="login__form--control" iconUrl="icons/lock.svg" placeholder="Пароль" (controlValue)="onPasswordInputChange($event)"/>
-
-    <app-button routerLink="/private" title="Войти" (btnClick)="onBtnClick()"/>
+  <div class="layout__page">
+    <router-outlet></router-outlet>
   </div>
 </div>
 
