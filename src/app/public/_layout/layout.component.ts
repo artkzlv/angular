@@ -3,6 +3,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { InputComponent } from '../../shared/components/input/input';
 import { PasswordInputComponent } from '../../shared/components/password-input/password-input';
 import { NgOptimizedImage } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -11,6 +12,7 @@ import { NgOptimizedImage } from '@angular/common';
     InputComponent,
     PasswordInputComponent,
     NgOptimizedImage,
+    RouterLink,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
