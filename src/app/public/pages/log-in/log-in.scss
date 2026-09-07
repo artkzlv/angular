@@ -1,0 +1,23 @@
+.login__container {}
+
+.login__heading {
+  text-align: center;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0;
+  margin-top: 39px;
+  margin-bottom: 26px;
+}
+
+.login__form {
+  display: flex;
+  gap: 17px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__form--control {
+  width: 360px;
+}

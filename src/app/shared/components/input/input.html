@@ -10,4 +10,11 @@
     [(ngModel)]="value"
     (input)="onInput($event)"
   />
+  @if (buttonIconUrl) {
+    <div class="form__button--container">
+      <button class="form__button" type="button" (click)="onButtonToggleClick()">
+        <img [src]="buttonIconUrl" width="16" height="16" [alt]="type" />
+      </button>
+    </div>
+  }
 </div>

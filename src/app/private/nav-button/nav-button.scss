@@ -1,0 +1,29 @@
+// default state
+.nav__button {
+  background: transparent;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  display: flex;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 1rem 3rem;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+
+  &--active {
+    .nav__text {
+      color: #fff;
+    }
+  }
+}
+
+.nav__text {
+  color: #51535D;
+}

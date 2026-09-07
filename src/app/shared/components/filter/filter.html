@@ -1,0 +1,20 @@
+<div class="filter">
+  <h2 class="filter__title">{{ title }}</h2>
+  <div class="filter__items">
+    @if (type === 'select') {
+      <app-select
+        [options]="filterItems"
+        [value]="value"
+        (valueChange)="onValueChange($event)"
+      ></app-select>
+    }
+
+    @if (type === 'radio') {
+      <app-radio
+        [options]="filterItems"
+        [value]="value"
+        (valueChange)="onValueChange($event)"
+      ></app-radio>
+    }
+  </div>
+</div>

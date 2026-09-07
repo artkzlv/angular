@@ -1,0 +1,12 @@
+<select
+  [value]="value"
+  (change)="onChange($event)"
+>
+  <option value="">Все</option>
+
+  @for (option of options; track option) {
+    <option [value]="option">
+      {{ option }}
+    </option>
+  }
+</select>

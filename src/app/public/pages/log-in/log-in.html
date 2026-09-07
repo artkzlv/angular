@@ -1,0 +1,13 @@
+<div class="login__container">
+  <h1 class="login__heading">
+    Вход
+  </h1>
+
+  <div class="login__form">
+    <app-input class="login__form--control" iconUrl="icons/user.svg" placeholder="Email" (controlValue)="onInputChange($event)"/>
+
+    <app-password-input class="login__form--control" iconUrl="icons/lock.svg" placeholder="Пароль" (controlValue)="onPasswordInputChange($event)"/>
+
+    <app-button routerLink="/private" title="Войти" (btnClick)="onLoginBtnClick()"/>
+  </div>
+</div>

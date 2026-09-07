@@ -1,31 +1,19 @@
-import { Component } from '@angular/core';
-import { ButtonComponent } from '../../shared/components/button/button.component';
-import { InputComponent } from '../../shared/components/input/input';
-import { PasswordInputComponent } from '../../shared/components/password-input/password-input';
+import { Component, inject, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
-  imports: [
-    ButtonComponent,
-    InputComponent,
-    PasswordInputComponent,
-    NgOptimizedImage,
-  ],
+  imports: [NgOptimizedImage, RouterOutlet],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   standalone: true,
 })
-export class PublicLayoutComponent {
-  onBtnClick(): void {
-    console.log('btn clicked');
-  }
+export class PublicLayoutComponent implements OnInit {
+  public activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  public router: Router = inject(Router);
 
-  onInputChange($event: string) {
-    console.log($event);
-  }
-
-  onPasswordInputChange($event: string) {
-    console.log($event);
+  ngOnInit(): void {
+    console.log(this.activatedRoute.snapshot);
   }
 }

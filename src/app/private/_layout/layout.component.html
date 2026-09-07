@@ -1,0 +1,63 @@
+<div class="block__start">
+  <div class="start__logo" routerLink="/private/home">
+    <img priority ngSrc="images/logo.svg" width="170" height="41" alt="logo" />
+  </div>
+
+  <app-input
+    class="start__search"
+    iconUrl="icons/search.svg"
+    buttonIconUrl="icons/arrow-right.svg"
+    placeholder="Поиск"
+    (controlValue)="onInputSearchChange($event)"
+  />
+
+  <div class="start__filter">
+    <app-filter
+      class="start__filterItem"
+      type="radio"
+      title="Жанр"
+      [filterItems]="filterGenres"
+      [value]="selectedGenre"
+      (valueChange)="selectedGenre = $event"
+    ></app-filter>
+
+    <app-filter
+      class="start__filterItem"
+      type="select"
+      title="Дата выхода"
+      [filterItems]="filterYears"
+      [value]="selectedYear"
+      (valueChange)="onYearChange($event)"
+    ></app-filter>
+  </div>
+
+  <div class="start__exit-link">
+    <app-nav-button
+      class="start__logout-button"
+      text="Выход"
+      iconUrl="icons/logout.svg"
+      (clicked)="onLogoutClick()"
+    />
+  </div>
+</div>
+
+<div class="block__end">
+    <div class="start__menu">
+      @for (item of navLinks; track item.id) {
+        <app-nav-button
+          [text]="item.text"
+          [disabled]=item.disabled
+          [iconUrl]="item.iconUrl"
+          [iconUrlActive]="item.iconUrlActive"
+          [routerLink]="item.link"
+          routerLinkActive="active"
+        />
+      }
+    </div>
+
+  <div class="end__nav">
+    <h1>Привет!</h1>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>

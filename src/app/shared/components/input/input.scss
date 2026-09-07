@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   background-color: initial;
-  color: #A0A0A0;
+  color: #b0b0b0;
   border: none;
   outline: none;
   flex: 1;
@@ -31,4 +31,17 @@
   width: 24px;
   height: 24px;
   padding-right: 1rem;
+}
+
+.form__icon--image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0.7);
+}
+
+.form__button {
+  cursor: pointer;
+  background: transparent;
+  border: none;
 }

@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class InputComponent {
   @Input() iconUrl!: string | null;
+  @Input() buttonIconUrl: string | null = null;
   @Input() type: 'text' | 'email' = 'text';
   @Input() placeholder = '';
   @Input() disabled = false;
@@ -23,5 +24,9 @@ export class InputComponent {
     this.value = (event.target as HTMLInputElement)?.value;
 
     this.controlValue.emit(this.value);
+  }
+
+  onButtonToggleClick(): void {
+    console.log('searchButtonClick');
   }
 }
