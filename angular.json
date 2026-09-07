@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "purple-wallet": {
+    "filmly": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "purple-wallet:build:production"
+              "buildTarget": "filmly:build:production"
             },
             "development": {
-              "buildTarget": "purple-wallet:build:development"
+              "buildTarget": "filmly:build:development"
             }
           },
           "defaultConfiguration": "development"
