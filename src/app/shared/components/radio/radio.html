@@ -1,0 +1,19 @@
+<div class="radio">
+  @for (option of options; track option) {
+    <label class="radio__item">
+      <input
+        type="radio"
+        name="filter-radio"
+        [value]="option"
+        [checked]="value === option"
+        (change)="onChange(option)"
+      />
+
+      <span class="radio__circle"></span>
+
+      <span class="radio__label">
+        {{ option }}
+      </span>
+    </label>
+  }
+</div>

@@ -2,8 +2,9 @@ import { Routes } from '@angular/router';
 import { PublicLayoutComponent } from './public/_layout/layout.component';
 import { PrivateLayoutComponent } from './private/_layout/layout.component';
 import { LogInComponent } from './public/pages/log-in/log-in';
-import { DashboardComponent } from './private/pages/dashboard/dashboard';
 import { authGuard } from './shared/guard/auth-guard';
+import { HomeComponent } from './private/pages/home/home';
+import { FavoritesComponent } from './private/pages/favorites/favorites';
 
 export const routes: Routes = [
   {
@@ -26,12 +27,16 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       {
-        path: 'dashboard',
-        component: DashboardComponent,
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'favorites',
+        component: FavoritesComponent,
       },
       {
         path: '**',
-        redirectTo: 'dashboard',
+        redirectTo: 'home',
       },
     ],
   },
