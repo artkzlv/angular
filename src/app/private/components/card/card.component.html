@@ -1,0 +1,29 @@
+@if (data) {
+  <div class="card">
+    <div class="card__icon">
+      <img [ngSrc]="data.posterUrl" width="209" height="309" [alt]="data.id">
+    </div>
+
+    <div class="card__title">
+        {{ data.title }}
+    </div>
+
+    <div class="card__rating">
+      <app-rating [value]="data.rating"></app-rating>
+    </div>
+
+    <div class="card__description">
+      {{ data.description }}
+    </div>
+
+    <button
+      class="card__favorite"
+      (click)="onClick($event)">
+      @if (data.isFavorite) {
+          <img ngSrc="icons/star-favorite-filled.svg" width="24" height="24" alt="favorite">
+      } @else {
+        <img ngSrc="icons/star-favorite.svg" width="24" height="24" alt="favorite">
+      }
+    </button>
+  </div>
+}

@@ -1,2 +1,9 @@
 <p>Найди фильм на вечер</p>
-<router-outlet></router-outlet>
+
+<div class="home__cards">
+  @for (item of cards; track item.id) {
+    <app-card class="card" [data]="item" />
+  } @empty {
+    <li>Вы ещё не добавили фильмы</li>
+  }
+</div>
