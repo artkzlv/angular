@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.home__cards {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 209px;
+}

@@ -1,0 +1,27 @@
+.rating {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 24px;
+
+  img {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: calc(var(--fill) * 100%);
+    background: url('/icons/star-filled.svg') no-repeat left center;
+    background-size: 24px 24px;
+    overflow: hidden;
+  }
+}
