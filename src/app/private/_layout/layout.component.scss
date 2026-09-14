@@ -24,6 +24,16 @@
   cursor: pointer;
 }
 
+.filter__title {
+  width: 100%;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0;
+  margin-bottom: 0;
+  margin-top: 30px;
+}
+
 .start__filter {
   display: flex;
   flex-direction: column;
@@ -32,8 +42,15 @@
   width: 100%;
 }
 
+.filter__year {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
 .start__filterItem {
   width: 100%;
+  margin-top: 38px;
 }
 
 .start__exit-link {
