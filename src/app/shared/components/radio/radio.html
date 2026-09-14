@@ -3,16 +3,15 @@
     <label class="radio__item">
       <input
         type="radio"
-        name="filter-radio"
-        [value]="option"
-        [checked]="value === option"
-        (change)="onChange(option)"
+        [value]="option.name"
+        [checked]="value === option.id"
+        (change)="onChange(option.id)"
       />
 
       <span class="radio__circle"></span>
 
       <span class="radio__label">
-        {{ option }}
+        {{ option.name }}
       </span>
     </label>
   }

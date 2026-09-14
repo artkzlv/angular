@@ -1,1 +1,16 @@
-<p>Favorites works!</p>
+<p>
+  @if (favorites.length) {
+    Вы добавили {{ favorites.length }}
+    {{ favorites.length | plural:'фильм':'фильма':'фильмов' }}
+  } @else {
+    Пока тут нет фильмов. Добавьте фильмы в избранное из каталога
+  }
+</p>
+
+<div class="favorites__cards">
+  @for (item of favorites; track item.id) {
+    <app-card class="card" [data]="item" />
+  } @empty {
+    <li>Вы ещё не добавили фильмы</li>
+  }
+</div>
