@@ -1,9 +1,21 @@
-<p>Найди фильм на вечер</p>
+@let result = filterCards$ | async;
+@let cards = result?.cards ?? [];
+@let count = cards.length;
+
+<p>
+  @if (result?.query && count) {
+    {{ count | plural:'Найден':'Найдено':'Найдено' }}
+    {{ count }}
+    {{ count | plural:'фильм':'фильма':'фильмов' }}
+  } @else {
+    Найди фильм на вечер
+  }
+</p>
 
 <div class="home__cards">
   @for (item of cards; track item.id) {
     <app-card class="card" [data]="item" />
   } @empty {
-    <li>Вы ещё не добавили фильмы</li>
+    <p>Вы ещё не добавили фильмы</p>
   }
 </div>

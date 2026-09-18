@@ -14,6 +14,7 @@ export const routes: Routes = [
       {
         path: 'log-in',
         component: LogInComponent,
+        title: 'Авторизация',
       },
       {
         path: '**',
@@ -29,10 +30,18 @@ export const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
+        title: 'Главная',
+        data: {
+          isShowSearch: true,
+        },
       },
       {
         path: 'favorites',
         component: FavoritesComponent,
+        title: 'Избранное',
+        data: {
+          isShowSearch: false,
+        },
       },
       {
         path: '**',

@@ -1,4 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  input,
+  output
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -10,20 +14,19 @@ import { CommonModule } from '@angular/common';
   styleUrl: './input.scss',
 })
 export class InputComponent {
-  @Input() iconUrl!: string | null;
-  @Input() buttonIconUrl: string | null = null;
-  @Input() type: 'text' | 'email' = 'text';
-  @Input() placeholder = '';
-  @Input() disabled = false;
-  @Input() value = '';
+  iconUrl = input<string | null>(null);
+  buttonIconUrl = input<string | null>(null);
+  type = input<'text' | 'email'>('text');
+  placeholder = input('');
+  disabled = input(false);
+  value = input('');
 
-  @Output()
-  controlValue: EventEmitter<string> = new EventEmitter<string>();
+  controlValue = output<string>();
 
   onInput(event: Event): void {
-    this.value = (event.target as HTMLInputElement)?.value;
+    const value = (event.target as HTMLInputElement).value || '';
 
-    this.controlValue.emit(this.value);
+    this.controlValue.emit(value);
   }
 
   onButtonToggleClick(): void {

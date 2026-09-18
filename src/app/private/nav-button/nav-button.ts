@@ -2,10 +2,9 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
   inject,
-  Input,
-  Output,
+  input,
+  output,
   signal,
 } from '@angular/core';
 import { NgClass, NgOptimizedImage } from '@angular/common';
@@ -23,20 +22,20 @@ export class AppNavButtonComponent implements AfterViewInit {
 
   type = 'button';
   isActive = signal<boolean>(false);
+  text = input('');
+  iconUrl = input('');
+  iconUrlActive = input('');
+  disabled = input(false);
 
-  @Input() text = '';
-  @Input() iconUrl = '';
-  @Input() iconUrlActive = '';
-  @Input() disabled = false;
-  @Output() clicked = new EventEmitter<Event>();
+  clicked = output<Event>();
 
   onClick(event: Event): void {
-    if (!this.disabled) {
+    if (!this.disabled()) {
       this.clicked.emit(event);
     }
   }
 
-  ngAfterViewInit():void {
+  ngAfterViewInit(): void {
     this._observer = new MutationObserver(() => {
       const hasClass =
         this._elementRef.nativeElement.classList.contains('active');

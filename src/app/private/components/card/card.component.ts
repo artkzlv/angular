@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { IMovie } from '../../../shared/models/movie.model';
 import { RatingComponent } from '../rating/rating.component';
@@ -10,7 +10,7 @@ import { RatingComponent } from '../rating/rating.component';
   imports: [NgOptimizedImage, RatingComponent],
 })
 export class CardComponent {
-  @Input() data: IMovie | null = null;
+  data = input<IMovie | null>(null);
 
   onClick($event: PointerEvent) {
     console.log('favoriteClick', $event);

@@ -1,4 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+} from '@angular/core';
 import { IGenre } from '../../const/genres.const';
 import { ISort } from '../../const/fake-sort.const';
 
@@ -9,10 +13,10 @@ import { ISort } from '../../const/fake-sort.const';
   styleUrls: ['./radio.scss'],
 })
 export class RadioComponent {
-  @Input() options: (IGenre | ISort)[] = [];
-  @Input() value: number | null = null;
+  options = input<(IGenre | ISort)[]>([]);
+  value = input<number | null>(null);
 
-  @Output() valueChange = new EventEmitter<number>();
+  valueChange = output<number>();
 
   onChange(value: number) {
     this.valueChange.emit(value);
