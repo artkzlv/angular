@@ -1,4 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-select',
@@ -7,10 +11,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./select.scss'],
 })
 export class SelectComponent {
-  @Input() options: string[] = [];
-  @Input() value = '';
+  options = input<string[]>([]);
+  value = input('');
 
-  @Output() valueChange = new EventEmitter<string>();
+  valueChange = output<string>();
 
   onChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value;

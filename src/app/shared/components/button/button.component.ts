@@ -1,4 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -8,10 +12,10 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
 })
 export class ButtonComponent {
-  @Input() title = '';
-  @Input() disabled = false;
+  title = input('');
+  disabled = input(false);
 
-  @Output() btnClick: EventEmitter<void> = new EventEmitter<void>();
+  btnClick = output();
 
   onBtnClick(): void {
     this.btnClick.emit();

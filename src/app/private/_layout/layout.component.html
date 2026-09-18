@@ -3,13 +3,16 @@
     <img priority ngSrc="images/logo.svg" width="170" height="41" alt="logo" />
   </div>
 
-  <app-input
-    class="start__search"
-    iconUrl="icons/search.svg"
-    buttonIconUrl="icons/arrow-right.svg"
-    placeholder="Поиск"
-    (controlValue)="onInputSearchChange($event)"
-  />
+  @if (isShowSearch()) {
+    <app-input
+      class="start__search"
+      iconUrl="icons/search.svg"
+      buttonIconUrl="icons/arrow-right.svg"
+      placeholder="Поиск"
+      [value]="searchValue() || ''"
+      (controlValue)="onInputSearchChange($event)"
+    />
+  }
 
   <div class="start__filter">
     <h2 class="filter__title">Жанр</h2>
@@ -74,7 +77,13 @@
     </div>
 
   <div class="end__nav">
-    <h1>Привет!</h1>
+    <h1>
+      @if (searchValue()) {
+        Результаты поиска
+      } @else {
+        {{ title() }}
+      }
+    </h1>
 
     <router-outlet></router-outlet>
   </div>

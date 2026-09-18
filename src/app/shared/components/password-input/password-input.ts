@@ -1,4 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -15,29 +20,28 @@ export enum EPasswordInputIcons {
   styleUrl: './password-input.scss',
 })
 export class PasswordInputComponent {
-  @Input() iconUrl!: string | null;
-  @Input() type: 'text' | 'password' = 'password';
-  @Input() placeholder = '';
-  @Input() disabled = false;
-  @Input() value = '';
+  iconUrl = input<string | null>(null);
+  type = signal<'text' | 'password'>('password');
+  placeholder = input('');
+  disabled = input(false);
+  value = input('');
 
-  @Output()
-  controlValue: EventEmitter<string> = new EventEmitter<string>();
+  controlValue = output<string>();
 
   buttonIcon = EPasswordInputIcons.Closed;
 
   onInput(event: Event): void {
-    this.value = (event.target as HTMLInputElement)?.value;
+    const value = (event.target as HTMLInputElement)?.value || '';
 
-    this.controlValue.emit(this.value);
+    this.controlValue.emit(value);
   }
 
   onButtonToggleClick(): void {
-    if (this.type === 'password') {
-      this.type = 'text';
+    if (this.type() === 'password') {
+      this.type.set('text');
       this.buttonIcon = EPasswordInputIcons.Opened;
     } else {
-      this.type = 'password';
+      this.type.set('password');
       this.buttonIcon = EPasswordInputIcons.Closed;
     }
   }
