@@ -67,11 +67,10 @@
       @for (item of navLinks; track item.id) {
         <app-nav-button
           [text]="item.text"
-          [disabled]=item.disabled
+          [disabled]="item.disabled"
           [iconUrl]="item.iconUrl"
           [iconUrlActive]="item.iconUrlActive"
           [routerLink]="item.link"
-          routerLinkActive="active"
         />
       }
     </div>

@@ -10,9 +10,10 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     AuthService,
+    TitleNavigationStrategy,
     {
       provide: TitleStrategy,
-      useClass: TitleNavigationStrategy,
+      useExisting: TitleNavigationStrategy,
     },
   ],
 };

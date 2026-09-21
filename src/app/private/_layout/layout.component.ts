@@ -1,11 +1,10 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import {
   ActivatedRoute,
   NavigationEnd,
   Router,
   RouterLink,
-  RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 import { InputComponent } from '../../shared/components/input/input';
@@ -16,9 +15,9 @@ import { YEARS } from '../../shared/const/fake-years.const';
 import { RadioComponent } from '../../shared/components/radio/radio';
 import { SelectComponent } from '../../shared/components/select/select';
 import { ISort, SORT } from '../../shared/const/fake-sort.const';
-import { Title } from '@angular/platform-browser';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { delay, filter, map, startWith, switchMap, tap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, startWith, switchMap } from 'rxjs';
+import { TitleNavigationStrategy } from '../../shared/components/titleNavigationStrategy/titleNavigationStrategy';
 
 @Component({
   selector: 'app-private-layout',
@@ -30,19 +29,18 @@ import { delay, filter, map, startWith, switchMap, tap } from 'rxjs';
     RouterOutlet,
     AppNavButtonComponent,
     RouterLink,
-    RouterLinkActive,
     InputComponent,
     RadioComponent,
-    SelectComponent
+    SelectComponent,
   ],
 })
-export class PrivateLayoutComponent implements OnInit {
-  private _titleService = inject(Title);
+
+export class PrivateLayoutComponent {
   private _router = inject(Router);
   private _activatedRoute = inject(ActivatedRoute);
-  private _destroyRef = inject(DestroyRef);
+  private _titleStrategy = inject(TitleNavigationStrategy);
 
-  title = signal<string>('');
+  title = this._titleStrategy.title;
 
   navLinks: IMenu[] = NAV_CONST;
   filterGenres: IGenre[] = GENRES;
@@ -84,20 +82,6 @@ export class PrivateLayoutComponent implements OnInit {
   searchValue = toSignal(
     this._activatedRoute.queryParamMap.pipe(map(v => v.get('q') ?? ''))
   );
-
-  ngOnInit(): void {
-    this._router.events
-      .pipe(
-        delay(100),
-        tap(event => {
-          if (event instanceof NavigationEnd) {
-            this.title.set(this._titleService.getTitle());
-          }
-        }),
-        takeUntilDestroyed(this._destroyRef)
-      )
-      .subscribe();
-  }
 
   onInputSearchChange(q: string): void {
     this._router.navigate([], {
