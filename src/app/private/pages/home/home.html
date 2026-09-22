@@ -1,19 +1,15 @@
-@let result = filterCards$ | async;
-@let cards = result?.cards ?? [];
-@let count = cards.length;
-
 <p>
-  @if (result?.query && count) {
-    {{ count | plural:'Найден':'Найдено':'Найдено' }}
-    {{ count }}
-    {{ count | plural:'фильм':'фильма':'фильмов' }}
+  @let count = moviesSignal()?.length ?? 0;
+
+  @if (searchQuery() && count) {
+    {{ count | plural:'Найден':'Найдено':'Найдено' }} {{ count }} {{ count | plural:'фильм':'фильма':'фильмов' }}
   } @else {
     Найди фильм на вечер
   }
 </p>
 
 <div class="home__cards">
-  @for (item of cards; track item.id) {
+  @for (item of moviesSignal(); track item.id) {
     <app-card class="card" [data]="item" />
   } @empty {
     <p>Вы ещё не добавили фильмы</p>

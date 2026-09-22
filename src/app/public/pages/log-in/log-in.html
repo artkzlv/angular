@@ -4,10 +4,14 @@
   </h1>
 
   <div class="login__form">
-    <app-input class="login__form--control" iconUrl="icons/user.svg" placeholder="Email" (controlValue)="onInputChange($event)"/>
+    <app-input class="login__form--control" iconUrl="icons/user.svg" placeholder="Email" (controlValue)="onInputChange('username', $event)"/>
 
-    <app-password-input class="login__form--control" iconUrl="icons/lock.svg" placeholder="Пароль" (controlValue)="onPasswordInputChange($event)"/>
+    <app-password-input class="login__form--control" iconUrl="icons/lock.svg" placeholder="Пароль" (controlValue)="onInputChange('password', $event)"/>
 
-    <app-button routerLink="/private" title="Войти" (btnClick)="onLoginBtnClick()"/>
+    @if (error) {
+      <div class="login__form--errors">{{ error }}</div>
+    }
+
+    <app-button title="Войти" (btnClick)="onLoginClick()"/>
   </div>
 </div>
