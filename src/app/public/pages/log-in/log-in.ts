@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { InputComponent } from '../../../shared/components/input/input';
 import { PasswordInputComponent } from '../../../shared/components/password-input/password-input';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../shared/services/auth';
+import { catchError, of, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-log-in',
@@ -10,26 +12,38 @@ import { RouterLink } from '@angular/router';
     ButtonComponent,
     InputComponent,
     PasswordInputComponent,
-    RouterLink,
   ],
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',
 })
 export class LogInComponent {
-  onLoginBtnClick(): void {
-    // this.router.navigate(['/private'], {
-    //   queryParams: {
-    //     from: 'auth',
-    //   },
-    // });
-    console.log('btn clicked');
+  private _authService: AuthService = inject(AuthService);
+  private _router: Router = inject(Router);
+  private _formValue: { username: string | null; password: string | null } = {
+    username: null,
+    password: null,
+  };
+
+  error: string | null = null;
+
+  onInputChange(ctrl: 'username' | 'password', value: string): void {
+    this.error = null;
+    this._formValue[ctrl] = value;
   }
 
-  onInputChange($event: string) {
-    console.log($event);
-  }
-
-  onPasswordInputChange($event: string) {
-    console.log($event);
+  onLoginClick(): void {
+    if (this._formValue.username == null || this._formValue.password == null)
+      return;
+    this._authService
+      .login$(this._formValue.username, this._formValue.password)
+      .pipe(
+        take(1),
+        tap(() => this._router.navigate(['private'])),
+        catchError(err => {
+          this.error = err;
+          return of(err);
+        })
+      )
+      .subscribe();
   }
 }

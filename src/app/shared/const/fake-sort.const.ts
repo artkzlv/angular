@@ -1,11 +1,11 @@
 export interface ISort {
-  id: number;
+  id: string;
   name: string;
   fieldName: string;
 }
 
 export const SORT: ISort[] = [
-  { id: 0, name: 'По жанру', fieldName: 'genreIds' },
-  { id: 1, name: 'По названию', fieldName: 'title' },
-  { id: 2, name: 'По рейтингу', fieldName: 'rating' },
+  { id: 'genreIds', name: 'По жанру', fieldName: 'genreIds' },
+  { id: 'title', name: 'По названию', fieldName: 'title' },
+  { id: 'rating', name: 'По рейтингу', fieldName: 'rating' },
 ];

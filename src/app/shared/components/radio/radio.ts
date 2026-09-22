@@ -14,11 +14,11 @@ import { ISort } from '../../const/fake-sort.const';
 })
 export class RadioComponent {
   options = input<(IGenre | ISort)[]>([]);
-  value = input<number | null>(null);
+  value = input<string>();
 
-  valueChange = output<number>();
+  valueChange = output<string>();
 
-  onChange(value: number) {
+  onChange(value: string) {
     this.valueChange.emit(value);
   }
 }

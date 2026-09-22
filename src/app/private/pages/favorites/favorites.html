@@ -1,24 +1,19 @@
-@let favorites = favorites$ | async;
-@let count = favorites?.length ?? 0;
-
 <p>
+  @let count = favoritesSignal()?.length ?? 0;
+
   @if (count) {
-    Вы добавили {{ count }}
-    {{ count | plural:'фильм':'фильма':'фильмов' }}
+    Вы добавили {{ count }} {{ count | plural:'фильм':'фильма':'фильмов' }}
   } @else {
     Пока тут нет фильмов. Добавьте фильмы в избранное из каталога
   }
 </p>
 
 <div class="favorites__cards">
-  @for (item of favorites ?? []; track item.id) {
+  @for (item of favoritesSignal(); track item.id) {
     <app-card class="card" [data]="item" />
   } @empty {
     <p>Вы ещё не добавили фильмы</p>
 
-    <app-button
-      routerLink="/private/home"
-      title="В каталог"
-    />
+    <app-button routerLink="/private/home" title="В каталог"/>
   }
 </div>

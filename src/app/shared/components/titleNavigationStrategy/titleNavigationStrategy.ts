@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 
@@ -6,11 +6,12 @@ import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 export class TitleNavigationStrategy extends TitleStrategy {
   private _titleService = inject(Title);
 
-  override updateTitle(routerState: RouterStateSnapshot): void {
-    const title = this.buildTitle(routerState);
+  title = signal('');
 
-    if (title) {
-      this._titleService.setTitle(title);
-    }
+  override updateTitle(routerState: RouterStateSnapshot): void {
+    const title = this.buildTitle(routerState) ?? '';
+
+    this._titleService.setTitle(title);
+    this.title.set(title);
   }
 }

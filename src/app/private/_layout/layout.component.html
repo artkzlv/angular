@@ -9,7 +9,7 @@
       iconUrl="icons/search.svg"
       buttonIconUrl="icons/arrow-right.svg"
       placeholder="Поиск"
-      [value]="searchValue() || ''"
+      [value]="filters()?.name || ''"
       (controlValue)="onInputSearchChange($event)"
     />
   }
@@ -19,9 +19,9 @@
 
     <app-radio
       class="start__filterItem"
-      [options]="filterGenres"
-      [value]="selectedGenreId"
-      (valueChange)="selectedGenreId = $event"
+      [options]="filterGenres()!"
+      [value]="filters()?.genre || ''"
+      (valueChange)="onGenreChange($event)"
     ></app-radio>
 
     <h2 class="filter__title">Дата выхода</h2>
@@ -30,14 +30,14 @@
       <app-select
         class="start__filterItem"
         [options]="filterYears"
-        [value]="selectedYearFrom"
+        [value]="filters()?.from"
         (valueChange)="onYearFromChange($event)"
       ></app-select>
 
       <app-select
         class="start__filterItem"
         [options]="filterYears"
-        [value]="selectedYearTo"
+        [value]="filters()?.to"
         (valueChange)="onYearToChange($event)"
       ></app-select>
     </div>
@@ -47,8 +47,8 @@
     <app-radio
       class="start__filterItem"
       [options]="sorters"
-      [value]="sorterId"
-      (valueChange)="sorterId = $event"
+      [value]="filters()?.sort"
+      (valueChange)="onSortChange($event)"
     ></app-radio>
   </div>
 
@@ -67,18 +67,17 @@
       @for (item of navLinks; track item.id) {
         <app-nav-button
           [text]="item.text"
-          [disabled]=item.disabled
+          [disabled]="item.disabled"
           [iconUrl]="item.iconUrl"
           [iconUrlActive]="item.iconUrlActive"
           [routerLink]="item.link"
-          routerLinkActive="active"
         />
       }
     </div>
 
   <div class="end__nav">
     <h1>
-      @if (searchValue()) {
+      @if (filters()?.name) {
         Результаты поиска
       } @else {
         {{ title() }}

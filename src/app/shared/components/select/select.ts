@@ -12,7 +12,7 @@ import {
 })
 export class SelectComponent {
   options = input<string[]>([]);
-  value = input('');
+  value = input();
 
   valueChange = output<string>();
 

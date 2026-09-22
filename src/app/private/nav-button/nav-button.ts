@@ -1,31 +1,20 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  inject,
-  input,
-  output,
-  signal,
-} from '@angular/core';
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { Component, input, output } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-nav-button',
   standalone: true,
-  imports: [NgClass, NgOptimizedImage],
+  imports: [NgOptimizedImage, RouterLink, RouterLinkActive],
   templateUrl: './nav-button.html',
   styleUrls: ['./nav-button.scss'],
 })
-export class AppNavButtonComponent implements AfterViewInit {
-  private _elementRef: ElementRef = inject(ElementRef);
-  private _observer!: MutationObserver;
-
-  type = 'button';
-  isActive = signal<boolean>(false);
+export class AppNavButtonComponent {
   text = input('');
   iconUrl = input('');
   iconUrlActive = input('');
   disabled = input(false);
+  routerLink = input('');
 
   clicked = output<Event>();
 
@@ -33,18 +22,5 @@ export class AppNavButtonComponent implements AfterViewInit {
     if (!this.disabled()) {
       this.clicked.emit(event);
     }
-  }
-
-  ngAfterViewInit(): void {
-    this._observer = new MutationObserver(() => {
-      const hasClass =
-        this._elementRef.nativeElement.classList.contains('active');
-      this.isActive.set(hasClass);
-    });
-
-    this._observer.observe(this._elementRef.nativeElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
   }
 }

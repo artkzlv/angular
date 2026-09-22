@@ -1,24 +1,25 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import {
   ActivatedRoute,
   NavigationEnd,
   Router,
   RouterLink,
-  RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 import { InputComponent } from '../../shared/components/input/input';
 import { AppNavButtonComponent } from '../nav-button/nav-button';
 import { IMenu, NAV_CONST } from '../const/menu-items.const';
-import { GENRES, IGenre } from '../../shared/const/genres.const';
+import { IGenre } from '../../shared/const/genres.const';
 import { YEARS } from '../../shared/const/fake-years.const';
 import { RadioComponent } from '../../shared/components/radio/radio';
 import { SelectComponent } from '../../shared/components/select/select';
 import { ISort, SORT } from '../../shared/const/fake-sort.const';
-import { Title } from '@angular/platform-browser';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { delay, filter, map, startWith, switchMap, tap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, startWith, switchMap } from 'rxjs';
+import { TitleNavigationStrategy } from '../../shared/components/titleNavigationStrategy/titleNavigationStrategy';
+import { FiltersService } from './services/filters.service';
+import { IFilter } from '../../shared/models/filter.model';
 
 @Component({
   selector: 'app-private-layout',
@@ -30,41 +31,50 @@ import { delay, filter, map, startWith, switchMap, tap } from 'rxjs';
     RouterOutlet,
     AppNavButtonComponent,
     RouterLink,
-    RouterLinkActive,
     InputComponent,
     RadioComponent,
-    SelectComponent
+    SelectComponent,
   ],
+  providers: [FiltersService],
 })
 export class PrivateLayoutComponent implements OnInit {
-  private _titleService = inject(Title);
   private _router = inject(Router);
   private _activatedRoute = inject(ActivatedRoute);
-  private _destroyRef = inject(DestroyRef);
+  private _titleStrategy = inject(TitleNavigationStrategy);
+  private _filtersService: FiltersService = inject(FiltersService);
 
-  title = signal<string>('');
+  title = this._titleStrategy.title;
+  filterGenres: Signal<IGenre[] | undefined> = toSignal(
+    this._filtersService.genres$
+  );
+  filters: Signal<IFilter | undefined> = toSignal(
+    this._filtersService.filters$
+  );
 
   navLinks: IMenu[] = NAV_CONST;
-  filterGenres: IGenre[] = GENRES;
   filterYears: string[] = YEARS;
   sorters: ISort[] = SORT;
-  selectedGenreId = this.filterGenres[0].id;
-  selectedYearFrom = this.filterYears[0];
-  selectedYearTo = this.filterYears[0];
-  sorterId: number | null = null;
 
   onLogoutClick(): void {
     console.log('onLogoutClick');
   }
 
   onYearFromChange(year: string) {
-    this.selectedYearFrom = year;
     console.log(year);
+    this._filtersService.setFilter('from', year);
   }
 
   onYearToChange(year: string) {
-    this.selectedYearTo = year;
     console.log(year);
+    this._filtersService.setFilter('to', year);
+  }
+
+  onGenreChange(genre: string | null): void {
+    this._filtersService.setFilter('genre', genre);
+  }
+
+  onSortChange(sort: string | null): void {
+    this._filtersService.setFilter('sort', sort as never);
   }
 
   isShowSearch = toSignal<boolean>(
@@ -81,29 +91,17 @@ export class PrivateLayoutComponent implements OnInit {
     )
   );
 
-  searchValue = toSignal(
-    this._activatedRoute.queryParamMap.pipe(map(v => v.get('q') ?? ''))
-  );
-
-  ngOnInit(): void {
-    this._router.events
-      .pipe(
-        delay(100),
-        tap(event => {
-          if (event instanceof NavigationEnd) {
-            this.title.set(this._titleService.getTitle());
-          }
-        }),
-        takeUntilDestroyed(this._destroyRef)
-      )
-      .subscribe();
-  }
-
   onInputSearchChange(q: string): void {
     this._router.navigate([], {
       relativeTo: this._activatedRoute,
       queryParams: { q },
       queryParamsHandling: 'merge',
     });
+
+    this._filtersService.setFilter('name', q);
+  }
+
+  ngOnInit(): void {
+    this._filtersService.loadGenres();
   }
 }
