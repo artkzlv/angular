@@ -3,8 +3,9 @@
     <label class="radio__item">
       <input
         type="radio"
-        [value]="option.name"
-        [checked]="value() === option.id"
+        [value]="option.id"
+        [checked]="innerValue === option.id"
+        [disabled]="disabled"
         (change)="onChange(option.id)"
       />
 

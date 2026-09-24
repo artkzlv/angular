@@ -12,7 +12,7 @@ export class FavoritesService {
   readonly favorites$: Observable<IMovie[]> = combineLatest([
     this._store.getValueAsync('favorites'),
     this._store.getValueAsync('filters'),
-  ]).pipe(map(([favorites, filters]) => filterAndSort(favorites, filters)));
+  ]).pipe(map(([favorites, filters]) => filterAndSort(favorites, filters, true)));
 
   loadFavorites(): void {
     of(FAVORITES)

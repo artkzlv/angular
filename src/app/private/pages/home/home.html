@@ -1,7 +1,7 @@
 <p>
   @let count = moviesSignal()?.length ?? 0;
 
-  @if (searchQuery() && count) {
+  @if (filters()?.name && count) {
     {{ count | plural:'Найден':'Найдено':'Найдено' }} {{ count }} {{ count | plural:'фильм':'фильма':'фильмов' }}
   } @else {
     Найди фильм на вечер
