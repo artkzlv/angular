@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter, TitleStrategy } from '@angular/router';
 
 import { routes } from './app.routes';
-import { TitleNavigationStrategy } from './shared/components/titleNavigationStrategy/titleNavigationStrategy';
+import { TitleNavigationStrategy } from './shared/services/titleNavigationStrategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [

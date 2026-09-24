@@ -3,15 +3,33 @@
     Вход
   </h1>
 
-  <div class="login__form">
-    <app-input class="login__form--control" iconUrl="icons/user.svg" placeholder="Email" (controlValue)="onInputChange('username', $event)"/>
+  <div class="login__form" [formGroup]="form">
+    <app-input
+      class="login__form--control"
+      prefixIcon="icons/user.svg"
+      placeholder="Email"
+      formControlName="username"
+    />
 
-    <app-password-input class="login__form--control" iconUrl="icons/lock.svg" placeholder="Пароль" (controlValue)="onInputChange('password', $event)"/>
-
-    @if (error) {
-      <div class="login__form--errors">{{ error }}</div>
+    @if (form.controls.username.touched && form.controls.username.hasError('required')) {
+      <div class="login__form--error">Поле обязательно</div>
     }
 
-    <app-button title="Войти" (btnClick)="onLoginClick()"/>
+    <app-password-input
+      class="login__form--control"
+      prefixIcon="icons/lock.svg"
+      placeholder="Пароль"
+      formControlName="password"
+    />
+
+    @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+      <div class="login__form--error">Поле обязательно</div>
+    }
+
+    @if (error) {
+      <div class="login__form--mainError">{{ error }}</div>
+    }
+
+    <app-button title="Войти" (btnClick)="onLoginClick()" [disabled]="isLoginDisabled()"/>
   </div>
 </div>

@@ -1,6 +1,8 @@
 <select
-  [value]="value()"
+  [value]="innerValue"
+  [disabled]="disabled"
   (change)="onChange($event)"
+  (blur)="onTouched()"
 >
   @for (option of options(); track option) {
     <option [value]="option">

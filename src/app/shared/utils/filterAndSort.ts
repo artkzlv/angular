@@ -1,10 +1,11 @@
 import { IMovie } from '../models/movie.model';
 import { IFilter } from '../models/filter.model';
 
-export const filterAndSort = (movies: IMovie[], filters: IFilter) => {
+export const filterAndSort = (movies: IMovie[], filters: IFilter, skipNameFilter?: boolean) => {
   const filteredMovies = movies.filter(
     movie =>
-      (!filters.name ||
+      (skipNameFilter ||
+        !filters.name ||
         movie.title.toLowerCase().includes(filters.name.toLowerCase())) &&
       (!Number(filters.genre) ||
         movie.genreIds.includes(Number(filters.genre))) &&

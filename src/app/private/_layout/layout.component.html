@@ -1,66 +1,61 @@
-<div class="block__start">
-  <div class="start__logo" routerLink="/private/home">
-    <img priority ngSrc="images/logo.svg" width="170" height="41" alt="logo" />
-  </div>
-
-  @if (isShowSearch()) {
-    <app-input
-      class="start__search"
-      iconUrl="icons/search.svg"
-      buttonIconUrl="icons/arrow-right.svg"
-      placeholder="Поиск"
-      [value]="filters()?.name || ''"
-      (controlValue)="onInputSearchChange($event)"
-    />
-  }
-
-  <div class="start__filter">
-    <h2 class="filter__title">Жанр</h2>
-
-    <app-radio
-      class="start__filterItem"
-      [options]="filterGenres()!"
-      [value]="filters()?.genre || ''"
-      (valueChange)="onGenreChange($event)"
-    ></app-radio>
-
-    <h2 class="filter__title">Дата выхода</h2>
-
-    <div class="filter__year">
-      <app-select
-        class="start__filterItem"
-        [options]="filterYears"
-        [value]="filters()?.from"
-        (valueChange)="onYearFromChange($event)"
-      ></app-select>
-
-      <app-select
-        class="start__filterItem"
-        [options]="filterYears"
-        [value]="filters()?.to"
-        (valueChange)="onYearToChange($event)"
-      ></app-select>
+<form [formGroup]="filterForm" class="block__start">
+    <div class="start__logo" routerLink="/private/home">
+      <img priority ngSrc="images/logo.svg" width="170" height="41" alt="logo" />
     </div>
 
-    <h2 class="filter__title">Сортировать</h2>
+    @if (isShowSearch()) {
+      <app-input
+        class="start__search"
+        prefixIcon="icons/search.svg"
+        postfixIcon="icons/arrow-right.svg"
+        placeholder="Поиск"
+        formControlName="name"
+      />
+    }
 
-    <app-radio
-      class="start__filterItem"
-      [options]="sorters"
-      [value]="filters()?.sort"
-      (valueChange)="onSortChange($event)"
-    ></app-radio>
-  </div>
+    <div class="start__filter">
+      <h2 class="filter__title">Жанр</h2>
 
-  <div class="start__exit-link">
-    <app-nav-button
-      class="start__logout-button"
-      text="Выход"
-      iconUrl="icons/logout.svg"
-      (clicked)="onLogoutClick()"
-    />
-  </div>
-</div>
+      <app-radio
+        class="start__filterItem"
+        formControlName="genre"
+        [options]="filterGenres() ?? []"
+      ></app-radio>
+
+      <h2 class="filter__title">Дата выхода</h2>
+
+      <div class="filter__year">
+        <app-select
+          class="start__filterItem"
+          formControlName="from"
+          [options]="filterYears"
+        ></app-select>
+
+        <app-select
+          class="start__filterItem"
+          formControlName="to"
+          [options]="filterYears"
+        ></app-select>
+      </div>
+
+      <h2 class="filter__title">Сортировать</h2>
+
+      <app-radio
+        class="start__filterItem"
+        formControlName="sort"
+        [options]="sorters"
+      ></app-radio>
+    </div>
+
+    <div class="start__exit-link">
+      <app-nav-button
+        class="start__logout-button"
+        text="Выход"
+        iconUrl="icons/logout.svg"
+        (clicked)="onLogoutClick()"
+      />
+    </div>
+</form>
 
 <div class="block__end">
     <div class="start__menu">

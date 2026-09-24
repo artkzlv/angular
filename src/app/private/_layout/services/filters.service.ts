@@ -10,12 +10,12 @@ export class FiltersService {
   readonly genres$: Observable<IGenre[]> = this._store.getValueAsync('genres');
   readonly filters$: Observable<IFilter> = this._store.getValueAsync('filters');
 
-  setFilter<K extends keyof IFilter>(key: K, value: IFilter[K]): void {
-    const filters = this._store.getValue('filters');
+  updateFilters(filters: Partial<IFilter>): void {
+    const currentFilters = this._store.getValue('filters');
 
     this._store.setValue('filters', {
+      ...currentFilters,
       ...filters,
-      [key]: value,
     });
   }
 

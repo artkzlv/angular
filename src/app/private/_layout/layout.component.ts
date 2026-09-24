@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, Signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import {
   ActivatedRoute,
@@ -15,11 +15,12 @@ import { YEARS } from '../../shared/const/fake-years.const';
 import { RadioComponent } from '../../shared/components/radio/radio';
 import { SelectComponent } from '../../shared/components/select/select';
 import { ISort, SORT } from '../../shared/const/fake-sort.const';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { filter, map, startWith, switchMap } from 'rxjs';
-import { TitleNavigationStrategy } from '../../shared/components/titleNavigationStrategy/titleNavigationStrategy';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime, filter, map, startWith, switchMap } from 'rxjs';
 import { FiltersService } from './services/filters.service';
 import { IFilter } from '../../shared/models/filter.model';
+import { TitleNavigationStrategy } from '../../shared/services/titleNavigationStrategy';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-private-layout',
@@ -34,6 +35,7 @@ import { IFilter } from '../../shared/models/filter.model';
     InputComponent,
     RadioComponent,
     SelectComponent,
+    ReactiveFormsModule,
   ],
   providers: [FiltersService],
 })
@@ -55,26 +57,37 @@ export class PrivateLayoutComponent implements OnInit {
   filterYears: string[] = YEARS;
   sorters: ISort[] = SORT;
 
+  private readonly _destroyRef = inject(DestroyRef);
+
+  filterForm = new FormGroup({
+    name: new FormControl('', { nonNullable: true }),
+    from: new FormControl<string | null>(null),
+    to: new FormControl<string | null>(null),
+    genre: new FormControl<string | null>(null),
+    sort: new FormControl<'genreIds' | 'title' | 'rating'>('title'),
+  });
+
+    ngOnInit(): void {
+        this._filtersService.loadGenres();
+
+        this._filtersService.filters$
+            .pipe(takeUntilDestroyed(this._destroyRef))
+            .subscribe(filters => {
+                this.filterForm.patchValue(filters, { emitEvent: false });
+            });
+
+        this.filterForm.valueChanges
+            .pipe(
+                debounceTime(500),
+                takeUntilDestroyed(this._destroyRef)
+            )
+            .subscribe(filters => {
+                this._filtersService.updateFilters(filters);
+            });
+    }
+
   onLogoutClick(): void {
     console.log('onLogoutClick');
-  }
-
-  onYearFromChange(year: string) {
-    console.log(year);
-    this._filtersService.setFilter('from', year);
-  }
-
-  onYearToChange(year: string) {
-    console.log(year);
-    this._filtersService.setFilter('to', year);
-  }
-
-  onGenreChange(genre: string | null): void {
-    this._filtersService.setFilter('genre', genre);
-  }
-
-  onSortChange(sort: string | null): void {
-    this._filtersService.setFilter('sort', sort as never);
   }
 
   isShowSearch = toSignal<boolean>(
@@ -90,18 +103,4 @@ export class PrivateLayoutComponent implements OnInit {
       map(v => v['isShowSearch'] ?? false)
     )
   );
-
-  onInputSearchChange(q: string): void {
-    this._router.navigate([], {
-      relativeTo: this._activatedRoute,
-      queryParams: { q },
-      queryParamsHandling: 'merge',
-    });
-
-    this._filtersService.setFilter('name', q);
-  }
-
-  ngOnInit(): void {
-    this._filtersService.loadGenres();
-  }
 }
