@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   OnInit,
   Signal,
@@ -9,9 +10,11 @@ import { CardComponent } from '../../components/card/card.component';
 import { PluralPipe } from '../../../shared/pipes/plural.pipe';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { RouterLink } from '@angular/router';
-import { FavoritesService } from './services/favorites.service';
 import { IMovie } from '../../../shared/models/movie.model';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { HttpService } from '../../../shared/services/http.service';
+import { StoreService } from '../../../shared/services/store.service';
+import { FiltersService } from '../../_layout/services/filters.service';
 
 @Component({
   selector: 'app-favorites',
@@ -20,16 +23,22 @@ import { toSignal } from '@angular/core/rxjs-interop';
   templateUrl: './favorites.html',
   styleUrl: './favorites.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [FavoritesService],
 })
 export class FavoritesComponent implements OnInit {
-  private _favoritesService: FavoritesService = inject(FavoritesService);
+  private _storeService: StoreService = inject(StoreService);
+  private _httpService: HttpService = inject(HttpService);
+  private readonly _destroyRef = inject(DestroyRef);
+  private _filtersService: FiltersService = inject(FiltersService);
 
   favoritesSignal: Signal<IMovie[] | undefined> = toSignal(
-    this._favoritesService.favorites$
+    this._storeService.getValueAsync('favorites')
   );
 
   ngOnInit(): void {
-    this._favoritesService.loadFavorites();
+    this._filtersService.filters$
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(filters => {
+        this._httpService.loadByFilters(filters);
+      });
   }
 }
