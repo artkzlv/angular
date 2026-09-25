@@ -16,11 +16,13 @@ import { RadioComponent } from '../../shared/components/radio/radio';
 import { SelectComponent } from '../../shared/components/select/select';
 import { ISort, SORT } from '../../shared/const/fake-sort.const';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, filter, map, startWith, switchMap } from 'rxjs';
+import { debounceTime, filter, map, startWith, switchMap, take } from 'rxjs';
 import { FiltersService } from './services/filters.service';
 import { IFilter } from '../../shared/models/filter.model';
 import { TitleNavigationStrategy } from '../../shared/services/titleNavigationStrategy';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../shared/services/auth.service';
+import { HttpService } from '../../shared/services/http.service';
 
 @Component({
   selector: 'app-private-layout',
@@ -44,6 +46,8 @@ export class PrivateLayoutComponent implements OnInit {
   private _activatedRoute = inject(ActivatedRoute);
   private _titleStrategy = inject(TitleNavigationStrategy);
   private _filtersService: FiltersService = inject(FiltersService);
+  private _authService = inject(AuthService);
+  private _httpService: HttpService = inject(HttpService);
 
   title = this._titleStrategy.title;
   filterGenres: Signal<IGenre[] | undefined> = toSignal(
@@ -64,30 +68,32 @@ export class PrivateLayoutComponent implements OnInit {
     from: new FormControl<string | null>(null),
     to: new FormControl<string | null>(null),
     genre: new FormControl<string | null>(null),
-    sort: new FormControl<'genreIds' | 'title' | 'rating'>('title'),
+    sort: new FormControl<'genre' | 'name' | 'rating'>('name'),
   });
 
-    ngOnInit(): void {
-        this._filtersService.loadGenres();
+  ngOnInit(): void {
+    this._httpService.loadGenres();
 
-        this._filtersService.filters$
-            .pipe(takeUntilDestroyed(this._destroyRef))
-            .subscribe(filters => {
-                this.filterForm.patchValue(filters, { emitEvent: false });
-            });
+    this._filtersService.filters$
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(filters => {
+        this.filterForm.patchValue(filters, { emitEvent: false });
+      });
 
-        this.filterForm.valueChanges
-            .pipe(
-                debounceTime(500),
-                takeUntilDestroyed(this._destroyRef)
-            )
-            .subscribe(filters => {
-                this._filtersService.updateFilters(filters);
-            });
-    }
+    this.filterForm.valueChanges
+      .pipe(debounceTime(500), takeUntilDestroyed(this._destroyRef))
+      .subscribe(filters => {
+        this._filtersService.updateFilters(filters);
+      });
+  }
 
   onLogoutClick(): void {
-    console.log('onLogoutClick');
+    this._authService
+      .logout$()
+      .pipe(take(1))
+      .subscribe(() => {
+        this._router.navigate(['/public']);
+      });
   }
 
   isShowSearch = toSignal<boolean>(

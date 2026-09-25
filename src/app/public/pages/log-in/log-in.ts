@@ -2,7 +2,6 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { InputComponent } from '../../../shared/components/input/input';
 import { PasswordInputComponent } from '../../../shared/components/password-input/password-input';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../shared/services/auth';
 import { catchError, of, take, tap } from 'rxjs';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -12,6 +11,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-log-in',

@@ -1,33 +1,24 @@
-import { IMovie } from '../models/movie.model';
 import { IFilter } from '../models/filter.model';
+import { HttpParams } from '@angular/common/http';
 
-export const filterAndSort = (movies: IMovie[], filters: IFilter, skipNameFilter?: boolean) => {
-  const filteredMovies = movies.filter(
-    movie =>
-      (skipNameFilter ||
-        !filters.name ||
-        movie.title.toLowerCase().includes(filters.name.toLowerCase())) &&
-      (!Number(filters.genre) ||
-        movie.genreIds.includes(Number(filters.genre))) &&
-      (!filters.from ||
-        filters.from === 'Все' ||
-        movie.releaseYear >= Number(filters.from)) &&
-      (!filters.to ||
-        filters.to === 'Все' ||
-        movie.releaseYear <= Number(filters.to))
-  );
+export const filterAndSort = (filters: IFilter) => {
+  let params = new HttpParams();
 
-  return [...filteredMovies].sort((a, b) => {
-    const field = filters.sort;
+  if (filters.genre !== '0') {
+    params = params.append('id', filters.genre!);
+  }
 
-    if (field === 'genreIds') {
-      return a.genreIds[0] - b.genreIds[0];
-    }
+  if (filters.from) {
+    params = params.set('from', filters.from);
+  }
 
-    if (field === 'title') {
-      return a.title.localeCompare(b.title);
-    }
+  if (filters.to) {
+    params = params.set('to', filters.to);
+  }
 
-    return b.rating - a.rating;
-  });
+  if (filters.sort) {
+    params = params.set('sort', filters.sort);
+  }
+
+  return params;
 };

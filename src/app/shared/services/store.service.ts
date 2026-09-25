@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
 import { IMovie } from '../models/movie.model';
 import { IGenre } from '../const/genres.const';
 import { IFilter } from '../models/filter.model';
@@ -20,7 +20,7 @@ export const STORE_DEFAULT_VALUE: IAppStore = {
     genre: '0',
     from: null,
     to: null,
-    sort: 'title',
+    sort: 'name',
   },
 };
 
@@ -38,7 +38,10 @@ export class StoreService {
   public getValueAsync<K extends keyof IAppStore>(
     key: K
   ): Observable<IAppStore[K]> {
-    return this._storeSubject.asObservable().pipe(map(state => state[key]));
+    return this._storeSubject.asObservable().pipe(
+      map(state => state[key]),
+      distinctUntilChanged()
+    );
   }
 
   public updateData(data: Partial<IAppStore>): void {

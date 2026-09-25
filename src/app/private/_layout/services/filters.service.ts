@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { delay,  Observable, of } from 'rxjs';
-import { GENRES, IGenre } from '../../../shared/const/genres.const';
+import { Observable } from 'rxjs';
+import { IGenre } from '../../../shared/const/genres.const';
 import { IFilter } from '../../../shared/models/filter.model';
 import { StoreService } from '../../../shared/services/store.service';
 
@@ -17,13 +17,5 @@ export class FiltersService {
       ...currentFilters,
       ...filters,
     });
-  }
-
-  loadGenres(): void {
-    of(GENRES)
-      .pipe(delay(1000))
-      .subscribe(genres => {
-        this._store.updateData({ genres });
-      });
   }
 }
